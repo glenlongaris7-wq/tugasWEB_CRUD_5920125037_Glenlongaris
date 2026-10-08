@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joy Salon - Reservasi</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f5f6fa;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    
+    .sidebar {
+      width: 240px;
+      background: #ffffff;
+      border-right: 1px solid #e5e7eb;
+      padding: 25px 15px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      color: #040189;
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .logo span {
+      color: #0b0b0b;
+    }
+
+    .menu-title {
+      font-size: 12px;
+      color: #999;
+      margin: 20px 12px 10px;
+      text-transform: uppercase;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #555;
+      padding: 13px 15px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      transition: 0.2s;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      background: #fce7f3;
+      color: #011071;
+    }
+
+    .icon {
+      width: 22px;
+      text-align: center;
+    }
+
+
+    .content {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .page-title h1 {
+      font-size: 27px;
+      margin-bottom: 5px;
+    }
+
+    .page-title p {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #fce7f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #060071;
+      font-weight: bold;
+    }
+
+
+    .filter-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 12px;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #000f95;
+    }
+
+    .btn {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: #00098b;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #060074;
+    }
+
+
+    .table-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .table-header h2 {
+      font-size: 18px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th {
+      background: #fafafa;
+      color: #777;
+      font-size: 13px;
+      text-align: left;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    tr:hover {
+      background: #fffafb;
+    }
+
+    .customer {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .phone {
+      font-size: 12px;
+      color: #999;
+      margin-top: 3px;
+    }
+
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .waiting {
+      background: #fff4d6;
+      color: #b77900;
+    }
+
+    .confirmed {
+      background: #dff7e8;
+      color: #198754;
+    }
+
+    .finished {
+      background: #e8e8e8;
+      color: #666;
+    }
+
+    .rejected {
+      background: #ffe1e1;
+      color: #d33;
+    }
+
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border: none;
+      padding: 7px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .confirm {
+      background: #dff7e8;
+      color: #198754;
+    }
+
+    .reject {
+      background: #ffe1e1;
+      color: #d33;
+    }
+
+    .edit {
+      background: #e5edff;
+      color: #315dcc;
+    }
+
+    .complete {
+      background: #e8dfff;
+      color: #7048c6;
+    }
+
+    .view {
+      background: #eee;
+      color: #555;
+    }
+
+    .action-btn:hover {
+      opacity: 0.75;
+    }
+
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+    }
+
+    .close {
+      font-size: 25px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .form-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      background: #eee;
+      color: #555;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 70px;
+        padding: 20px 8px;
+      }
+
+      .logo {
+        font-size: 15px;
+      }
+
+      .menu a {
+        justify-content: center;
+      }
+
+      .menu a span:not(.icon),
+      .menu-title {
+        display: none;
+      }
+
+      .content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 20px;
+      }
+
+      .filter-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .page-title h1 {
+        font-size: 22px;
+      }
+
+      .profile {
+        display: none;
+      }
+
+      .content {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="logo">
+      JOY<span>SALON</span>
+    </div>
+
+    <div class="menu-title">Menu Utama</div>
+
+    <nav class="menu">
+      <a href="#">
+        <span class="icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="#" class="active">
+        <span class="icon">📅</span>
+        <span>Reservasi</span>
+      </a>
+
+      <a href="#">
+        <span class="icon">👩</span>
+        <span>Pelanggan</span>
+      </a>
+
+      <a href="#">
+        <span class="icon">✂</span>
+        <span>Treatment</span>
+      </a>
+
+      <a href="#">
+        <span class="icon">👤</span>
+        <span>Karyawan</span>
+      </a>
+    </nav>
+
+    <div class="menu-title">Pengaturan</div>
+
+    <nav class="menu">
+      <a href="#">
+        <span class="icon">⚙</span>
+        <span>Pengaturan</span>
+      </a>
+
+      <a href="#">
+        <span class="icon">⇥</span>
+        <span>Keluar</span>
+      </a>
+    </nav>
+
+  </aside>
+
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+      <div class="page-title">
+        <h1>Reservasi</h1>
+        <p>Kelola semua reservasi pelanggan salon.</p>
+      </div>
+
+      <div class="profile">
+        <div class="profile-img">JS</div>
+        <div>
+          <b>Admin</b>
+          <p style="font-size:12px;color:#999;">Administrator</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- FILTER -->
+    <div class="filter-box">
+
+      <div class="filter-row">
+
+        <div class="input-group">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari nama pelanggan / nomor HP..."
+            onkeyup="filterData()">
+        </div>
+
+        <input
+          type="date"
+          id="dateFilter"
+          onchange="filterData()">
+
+        <select id="statusFilter" onchange="filterData()">
+          <option value="">Semua Status</option>
+          <option value="Menunggu">Menunggu</option>
+          <option value="Dikonfirmasi">Dikonfirmasi</option>
+          <option value="Selesai">Selesai</option>
+          <option value="Ditolak">Ditolak</option>
+        </select>
+
+        <button class="btn btn-primary" onclick="openAddModal()">
+          + Reservasi
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <div class="table-card">
+
+      <div class="table-header">
+        <h2>Daftar Reservasi</h2>
+        <span id="totalData" style="font-size:13px;color:#999;"></span>
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Pelanggan</th>
+              <th>Treatment</th>
+              <th>Tanggal</th>
+              <th>Jam</th>
+              <th>Karyawan</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody id="reservationTable"></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<!-- MODAL TAMBAH / EDIT -->
+<div class="modal" id="reservationModal">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2 id="modalTitle">Tambah Reservasi</h2>
+      <span class="close" onclick="closeModal()">×</span>
+    </div>
+
+    <div class="form-group">
+      <label>Nama Pelanggan</label>
+      <input type="text" id="customerName" placeholder="Masukkan nama">
+    </div>
+
+    <div class="form-group">
+      <label>Nomor HP</label>
+      <input type="text" id="customerPhone" placeholder="08xxxxxxxxxx">
+    </div>
+
+    <div class="form-group">
+      <label>Treatment</label>
+      <select id="treatment">
+        <option value="Haircut">Haircut</option>
+        <option value="Hair Coloring">Hair Coloring</option>
+        <option value="Creambath">Creambath</option>
+        <option value="Hair Spa">Hair Spa</option>
+        <option value="Manicure">Manicure</option>
+        <option value="Pedicure">Pedicure</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Tanggal</label>
+      <input type="date" id="reservationDate">
+    </div>
+
+    <div class="form-group">
+      <label>Jam</label>
+      <input type="time" id="reservationTime">
+    </div>
+
+    <div class="form-group">
+      <label>Karyawan</label>
+      <select id="employee">
+        <option value="Sari">lyodra</option>
+        <option value="Maya">Mitha</option>
+        <option value="Rina">jessica mila</option>
+        <option value="Dina">agnes monica</option>
+      </select>
+    </div>
+
+    <div class="form-buttons">
+      <button class="btn btn-cancel" onclick="closeModal()">
+        Batal
+      </button>
+
+      <button class="btn btn-primary" onclick="saveReservation()">
+        Simpan
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /* ================= DATA ================= */
+
+  let reservations = [
+
+    {
+      kode: "RSV001",
+      nama: "jesennat",
+      hp: "081234567890",
+      treatment: "Haircut",
+      tanggal: "2026-10-08",
+      jam: "09:00",
+      karyawan: "lyodra",
+      status: "Menunggu"
+    },
+
+    {
+      kode: "RSV002",
+      nama: "Melando wote",
+      hp: "082345678901",
+      treatment: "Hair Coloring",
+      tanggal: "2026-10-08",
+      jam: "10:00",
+      karyawan: "mitha",
+      status: "Dikonfirmasi"
+    },
+
+    {
+      kode: "RSV003",
+      nama: "david lahuw",
+      hp: "083456789012",
+      treatment: "Creambath",
+      tanggal: "2026-10-09",
+      jam: "11:00",
+      karyawan: "jessica mila",
+      status: "Selesai"
+    },
+
+    {
+      kode: "RSV004",
+      nama: "reyhan suban",
+      hp: "084567890123",
+      treatment: "Hair Spa",
+      tanggal: "2026-10-09",
+      jam: "13:00",
+      karyawan: "agnes monica",
+      status: "Ditolak"
+    },
+
+    {
+      kode: "RSV005",
+      nama: "dafin talam",
+      hp: "085678901234",
+      treatment: "Manicure",
+      tanggal: "2026-10-10",
+      jam: "14:00",
+      karyawan: "maimuna",
+      status: "Menunggu"
+    }
+
+  ];
+
+
+  let editIndex = -1;
+
+
+  /* ================= TAMPILKAN DATA ================= */
+
+  function displayData(data = reservations) {
+
+    const table = document.getElementById("reservationTable");
+
+    table.innerHTML = "";
+
+    document.getElementById("totalData").innerText =
+      data.length + " Reservasi";
+
+    data.forEach((item) => {
+
+      const originalIndex = reservations.indexOf(item);
+
+      let statusClass = "";
+
+      if (item.status === "Menunggu") {
+        statusClass = "waiting";
+      } else if (item.status === "Dikonfirmasi") {
+        statusClass = "confirmed";
+      } else if (item.status === "Selesai") {
+        statusClass = "finished";
+      } else if (item.status === "Ditolak") {
+        statusClass = "rejected";
+      }
+
+      let actions = "";
+
+      /* STATUS MENUNGGU */
+
+      if (item.status === "Menunggu") {
+
+        actions = `
+          <button
+            class="action-btn confirm"
+            onclick="confirmReservation(${originalIndex})">
+            Konfirmasi
+          </button>
+
+          <button
+            class="action-btn reject"
+            onclick="rejectReservation(${originalIndex})">
+            Tolak
+          </button>
+        `;
+
+      }
+
+      /* STATUS DIKONFIRMASI */
+
+      else if (item.status === "Dikonfirmasi") {
+
+        actions = `
+          <button
+            class="action-btn edit"
+            onclick="editReservation(${originalIndex})">
+            Ubah
+          </button>
+
+          <button
+            class="action-btn complete"
+            onclick="completeReservation(${originalIndex})">
+            Selesai
+          </button>
+        `;
+
+      }
+
+      /* STATUS SELESAI / DITOLAK */
+
+      else {
+
+        actions = `
+          <button
+            class="action-btn view"
+            onclick="viewReservation(${originalIndex})">
+            Lihat
+          </button>
+        `;
+
+      }
+
+
+      table.innerHTML += `
+
+        <tr>
+
+          <td>
+            <b>${item.kode}</b>
+          </td>
+
+          <td>
+            <div class="customer">${item.nama}</div>
+            <div class="phone">${item.hp}</div>
+          </td>
+
+          <td>
+            ${item.treatment}
+          </td>
+
+          <td>
+            ${formatDate(item.tanggal)}
+          </td>
+
+          <td>
+            ${item.jam}
+          </td>
+
+          <td>
+            ${item.karyawan}
+          </td>
+
+          <td>
+            <span class="status ${statusClass}">
+              ${item.status}
+            </span>
+          </td>
+
+          <td>
+            <div class="actions">
+              ${actions}
+            </div>
+          </td>
+
+        </tr>
+
+      `;
+
+    });
+
+  }
+
+
+  /* ================= FORMAT TANGGAL ================= */
+
+  function formatDate(date) {
+
+    if (!date) return "-";
+
+    const d = new Date(date + "T00:00:00");
+
+    return d.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+
+  }
+
+
+  /* ================= SEARCH & FILTER ================= */
+
+  function filterData() {
+
+    const search =
+      document.getElementById("searchInput")
+      .value
+      .toLowerCase();
+
+    const date =
+      document.getElementById("dateFilter").value;
+
+    const status =
+      document.getElementById("statusFilter").value;
+
+
+    const filtered = reservations.filter(item => {
+
+      const matchSearch =
+        item.nama.toLowerCase().includes(search) ||
+        item.hp.toLowerCase().includes(search);
+
+      const matchDate =
+        date === "" || item.tanggal === date;
+
+      const matchStatus =
+        status === "" || item.status === status;
+
+      return matchSearch && matchDate && matchStatus;
+
+    });
+
+    displayData(filtered);
+
+  }
+
+
+  /* ================= KONFIRMASI ================= */
+
+  function confirmReservation(index) {
+
+    if (
+      confirm(
+        "Apakah reservasi " +
+        reservations[index].nama +
+        " ingin dikonfirmasi?"
+      )
+    ) {
+
+      reservations[index].status = "Dikonfirmasi";
+
+      displayData();
+
+    }
+
+  }
+
+
+  /* ================= TOLAK ================= */
+
+  function rejectReservation(index) {
+
+    if (
+      confirm(
+        "Apakah reservasi " +
+        reservations[index].nama +
+        " ingin ditolak?"
+      )
+    ) {
+
+      reservations[index].status = "Ditolak";
+
+      displayData();
+
+    }
+
+  }
+
+
+  /* ================= SELESAI ================= */
+
+  function completeReservation(index) {
+
+    if (
+      confirm(
+        "Apakah reservasi ini sudah selesai?"
+      )
+    ) {
+
+      reservations[index].status = "Selesai";
+
+      displayData();
+
+    }
+
+  }
+
+
+  /* ================= LIHAT ================= */
+
+  function viewReservation(index) {
+
+    const item = reservations[index];
+
+    alert(
+
+      "DETAIL RESERVASI\n\n" +
+
+      "Kode       : " + item.kode + "\n" +
+      "Pelanggan  : " + item.nama + "\n" +
+      "No. HP     : " + item.hp + "\n" +
+      "Treatment  : " + item.treatment + "\n" +
+      "Tanggal    : " + formatDate(item.tanggal) + "\n" +
+      "Jam        : " + item.jam + "\n" +
+      "Karyawan   : " + item.karyawan + "\n" +
+      "Status     : " + item.status
+
+    );
+
+  }
+
+
+  /* ================= BUKA MODAL TAMBAH ================= */
+
+  function openAddModal() {
+
+    editIndex = -1;
+
+    document.getElementById("modalTitle").innerText =
+      "Tambah Reservasi";
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("reservationDate").value = "";
+    document.getElementById("reservationTime").value = "";
+
+    document.getElementById("reservationModal").style.display =
+      "flex";
+
+  }
+
+
+  /* ================= EDIT ================= */
+
+  function editReservation(index) {
+
+    editIndex = index;
+
+    const item = reservations[index];
+
+    document.getElementById("modalTitle").innerText =
+      "Ubah Reservasi";
+
+    document.getElementById("customerName").value =
+      item.nama;
+
+    document.getElementById("customerPhone").value =
+      item.hp;
+
+    document.getElementById("treatment").value =
+      item.treatment;
+
+    document.getElementById("reservationDate").value =
+      item.tanggal;
+
+    document.getElementById("reservationTime").value =
+      item.jam;
+
+    document.getElementById("employee").value =
+      item.karyawan;
+
+    document.getElementById("reservationModal").style.display =
+      "flex";
+
+  }
+
+
+  /* ================= SIMPAN ================= */
+
+  function saveReservation() {
+
+    const nama =
+      document.getElementById("customerName").value.trim();
+
+    const hp =
+      document.getElementById("customerPhone").value.trim();
+
+    const treatment =
+      document.getElementById("treatment").value;
+
+    const tanggal =
+      document.getElementById("reservationDate").value;
+
+    const jam =
+      document.getElementById("reservationTime").value;
+
+    const karyawan =
+      document.getElementById("employee").value;
+
+
+    if (
+      nama === "" ||
+      hp === "" ||
+      tanggal === "" ||
+      jam === ""
+    ) {
+
+      alert("Mohon lengkapi semua data!");
+
+      return;
+
+    }
+
+
+    /* EDIT DATA */
+
+    if (editIndex !== -1) {
+
+      reservations[editIndex].nama = nama;
+      reservations[editIndex].hp = hp;
+      reservations[editIndex].treatment = treatment;
+      reservations[editIndex].tanggal = tanggal;
+      reservations[editIndex].jam = jam;
+      reservations[editIndex].karyawan = karyawan;
+
+      alert("Data reservasi berhasil diubah!");
+
+    }
+
+    /* TAMBAH DATA */
+
+    else {
+
+      const newCode =
+        "RSV" +
+        String(reservations.length + 1).padStart(3, "0");
+
+      reservations.push({
+
+        kode: newCode,
+        nama: nama,
+        hp: hp,
+        treatment: treatment,
+        tanggal: tanggal,
+        jam: jam,
+        karyawan: karyawan,
+        status: "Menunggu"
+
+      });
+
+      alert("Reservasi berhasil ditambahkan!");
+
+    }
+
+
+    closeModal();
+
+    displayData();
+
+  }
+
+
+  /* ================= TUTUP MODAL ================= */
+
+  function closeModal() {
+
+    document.getElementById("reservationModal").style.display =
+      "none";
+
+  }
+
+
+  /* ================= KLIK DI LUAR MODAL ================= */
+
+  window.onclick = function(event) {
+
+    const modal =
+      document.getElementById("reservationModal");
+
+    if (event.target === modal) {
+      closeModal();
+    }
+
+  };
+
+
+  /* ================= LOAD DATA ================= */
+
+  displayData();
+
+</script>
+
+</body>
+</html>
